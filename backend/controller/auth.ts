@@ -2,14 +2,14 @@ import express from 'express';
 import { inject } from 'inversify';
 import { interfaces, controller, httpPost, request, response } from "inversify-express-utils";
 import TYPES from '../helpers/types';
-import Session from '../model/session';
-import { User } from '../model/user';
-import { AuthService } from '../service/auth';
+import Session from '../model/ApiModels/session';
+import { User } from '../model/DataModel/user';
+import { UserService } from '../service/user';
 
 @controller("/auth")
 export class AuthController implements interfaces.Controller {
 
-  constructor( @inject(TYPES.AuthService) private userService: AuthService) { }
+  constructor( @inject(TYPES.AuthService) private userService: UserService) { }
 
   @httpPost("/login")
   async login (@request() req: express.Request, @response() res: express.Response) {
@@ -18,7 +18,7 @@ export class AuthController implements interfaces.Controller {
         return res.status(200).json(response);
       })
       .catch((err: Error) => {
-        return res.status(401).json(err);
+        return res.status(401).json({message: err.message});
       });
   } 
 
@@ -29,7 +29,7 @@ export class AuthController implements interfaces.Controller {
         return res.status(200).json(response);
       })
       .catch((err: Error) => {
-        return res.status(401).json(err);
+        return res.status(401).json({message: err.message});
       });
   } 
 }

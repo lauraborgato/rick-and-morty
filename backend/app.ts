@@ -21,6 +21,6 @@ server.setConfig((app) => {
 
 
 let appConfigured = server.build();
-let serve: any = appConfigured.listen(process.env.PORT || 3000, () => `App running on ${serve.address().port}`);
+let serve: any = appConfigured.listen(process.env.PORT || 8080, () => `App running on ${serve.address().port}`);
 
 ConnectDatabase();

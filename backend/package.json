@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node app.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "start:dev": "nodemon --watch './**/*' --ext 'ts,json' --exec 'ts-node ./app.ts'"
   },
   "author": "",
   "license": "ISC",
@@ -30,7 +31,6 @@
     "inversify-express-utils": "^6.3.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.8",
-    "reflect-metadata": "^0.1.13",
-    "rickmortyapi": "^0.3.0"
+    "reflect-metadata": "^0.1.13"
   }
 }

@@ -1,12 +1,12 @@
 import { injectable } from "inversify";
-import { User, UserModel } from "../model/user";
+import { User, UserModel } from "../model/DataModel/user";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import Session from "../model/session";
+import Session from "../model/ApiModels/session";
 import { secretString } from "../helpers/utils/config";
 
 @injectable()
-export class AuthService {
+export class UserService {
   validateUser = async (user: User): Promise<Session> => {
     let fetchuser: any;
     return UserModel.findOne({ email: user.email })
@@ -49,7 +49,30 @@ export class AuthService {
       });
   }
 
-  findById(id: number) {
-    //
+  addFavouriteToUser = async (userId: number, characterId: number): Promise<User> => {
+    console.log(userId);
+    return UserModel.findById(userId)
+      .then((user: User | null) => {
+        console.log(user);
+        if(user){
+          user.favouriteCharacters.push(characterId);
+          user.save();
+          return user; 
+        }
+        throw new Error('invalid user');
+    }).catch((err: Error) => { throw err });
+  }
+
+  removeFavouriteFromUser = async (userId: number, characterId: number): Promise<User> => {
+    return UserModel.findById(userId)
+      .then((user: User | null) => {
+        if(user){
+          console.log(user.favouriteCharacters)
+          user.favouriteCharacters = user.favouriteCharacters.filter((currentCharacterId: number) => currentCharacterId !== characterId);
+          user.save();
+          return user;
+        }
+        throw new Error('invalid user');
+    }).catch((err: Error) => { throw err });
   }
 }
