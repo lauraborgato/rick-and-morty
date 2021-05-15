@@ -1,4 +1,4 @@
-import Character from '../DataModel/character';
+import Character from './character';
 import Episode from './episode';
 import Location from './location';
 

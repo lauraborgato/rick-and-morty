@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node app.ts",
     "build": "tsc",
-    "start:dev": "nodemon --watch './**/*' --ext 'ts,json' --exec 'ts-node ./app.ts'"
+    "start:dev": "nodemon --watch './src/**/*.ts' --ext 'ts,json' --exec 'ts-node ./app.ts'"
   },
   "author": "",
   "license": "ISC",
