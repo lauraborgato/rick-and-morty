@@ -1,0 +1,542 @@
+{
+  "openapi":"3.0.1",
+  "info":{
+     "title":"Rick And Morty",
+     "description":"Tech test for Haufe company APIs documentation",
+     "termsOfService":"http://swagger.io/terms/",
+     "contact":{
+        "name":"Swagger API Team"
+     },
+     "license":{
+        "name":"MIT"
+     },
+     "version":"1.0.0"
+  },
+  "servers":[
+     {
+        "url":"/api"
+     }
+  ],
+  "security":[
+     {
+        "bearerAuth":[]
+     }
+  ],
+  "paths":{
+    "/auth/login":{
+      "security": [],
+      "post":{
+          "tags":[
+            "Auth"
+          ],
+          "description":"If the user exits generate a token and return the session data",
+          "operationId":"login",
+          "requestBody":{
+            "description":"User login information",
+            "required":true,
+            "content":{
+                "application/json":{
+                  "schema":{
+                      "$ref":"#/components/schemas/User"
+                  }
+                }
+            }
+          },
+          "responses":{
+            "200":{
+                "description":"Auth response",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Session"
+                      }
+                  }
+                }
+            },
+            "401":{
+                "description":"Unauthorized",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Error"
+                      }
+                  }
+                }
+            },
+            "default":{
+                "description":"unexpected error",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Error"
+                      }
+                  }
+                }
+            }
+          }
+      }
+    },
+    "/auth/signup":{
+      "security": [], 
+      "post":{
+          "tags":[
+            "Auth"
+          ],
+          "description":"If the user don't exits generate a new user and return the session data",
+          "operationId":"signUp",
+          "requestBody":{
+            "description":"User Signup information",
+            "required":true,
+            "content":{
+                "application/json":{
+                  "schema":{
+                      "$ref":"#/components/schemas/User"
+                  }
+                }
+            }
+          },
+          "responses":{
+            "200":{
+                "description":"Auth response",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Session"
+                      }
+                  }
+                }
+            },
+            "401":{
+                "description":"Unauthorized",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Error"
+                      }
+                  }
+                }
+            },
+            "default":{
+                "description":"unexpected error",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Error"
+                      }
+                  }
+                }
+            }
+          }
+      }
+    },
+    "/characters":{
+      "get":{
+          "tags":[
+            "Character"
+          ],
+          "description":"Get character list",
+          "operationId":"getCharacterList",
+          "parameters":[
+            {
+                "name":"page",
+                "in":"query",
+                "description":"Page to fetch",
+                "schema":{
+                  "type":"string"
+                }
+            }
+          ],
+          "responses":{
+            "200":{
+                "description":"Characters response",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/CharacterResponse"
+                      }
+                  }
+                }
+            },
+            "401":{
+                "description":"Unahuthorize",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Error"
+                      }
+                  }
+                }
+            },
+            "default":{
+                "description":"unexpected error",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Error"
+                      }
+                  }
+                }
+            }
+          }
+      }
+    },
+    "/characters/{id}":{
+      "get":{
+          "tags":[
+            "Character"
+          ],
+          "description":"Get Character details by id",
+          "operationId":"findById",
+          "parameters":[
+            {
+                "name":"id",
+                "in":"path",
+                "description":"Character Id",
+                "required":true,
+                "schema":{
+                  "type":"string"
+                }
+            }
+          ],
+          "responses":{
+            "200":{
+                "description":"Success",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/CharacterDetails"
+                      }
+                  }
+                }
+            },
+            "401":{
+                "description":"Unauthorize",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Error"
+                      }
+                  }
+                }
+            },
+            "default":{
+                "description":"unexpected error",
+                "content":{
+                  "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Error"
+                      }
+                  }
+                }
+            }
+          }
+      }
+    },
+    "/characters/favourite/{id}":{
+      "put":{
+        "tags":[
+            "Character"
+        ],
+        "description":"Add character to the favourite list",
+        "operationId":"addToFavourite",
+        "parameters":[
+            {
+              "name":"id",
+              "in":"path",
+              "description":"Character id to be added on favourite user list",
+              "required":true,
+              "schema":{
+                  "type":"number"
+              }
+            }
+        ],
+        "responses":{
+            "200":{
+              "description":"Success",
+              "content":{
+                  "application/json":{
+                    "schema":{
+                        "type":"number"
+                    }
+                  }
+              }
+            },
+            "401":{
+              "description":"Unauthorize",
+              "content":{
+                  "application/json":{
+                    "schema":{
+                        "$ref":"#/components/schemas/Error"
+                    }
+                  }
+              }
+            },
+            "default":{
+              "description":"unexpected error",
+              "content":{
+                  "application/json":{
+                    "schema":{
+                        "$ref":"#/components/schemas/Error"
+                    }
+                  }
+              }
+            }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Character"
+        ],
+        "description":"Remove character from the favourite list",
+        "operationId":"addToFavourite",
+        "parameters":[
+          {
+              "name":"id",
+              "in":"path",
+              "description":"Character id be removed from favourite user list",
+              "required":true,
+              "schema":{
+                "type":"number"
+              }
+          }
+        ],
+        "responses":{
+          "200":{
+              "description":"Success",
+              "content":{
+                "application/json":{
+                    "schema":{
+                      "type":"number"
+                    }
+                }
+              }
+          },
+          "401":{
+              "description":"Unauthorize",
+              "content":{
+                "application/json":{
+                    "schema":{
+                      "$ref":"#/components/schemas/Error"
+                    }
+                }
+              }
+          },
+          "default":{
+              "description":"unexpected error",
+              "content":{
+                "application/json":{
+                    "schema":{
+                      "$ref":"#/components/schemas/Error"
+                    }
+                }
+              }
+          }
+        }
+      }
+    }
+  },
+  "components":{
+     "securitySchemes":{
+        "bearerAuth":{
+           "type":"http",
+           "scheme":"bearer",
+           "bearerFormat":"JWT"
+        }
+     },
+     "schemas":{
+        "Character":{
+           "type":"object",
+           "properties":{
+              "required":[
+                 "id",
+                 "name"
+              ],
+              "id":{
+                 "type":"string",
+                 "description":"The id of the character"
+              },
+              "name":{
+                 "description":"The name of the character",
+                 "type":"string"
+              },
+              "status":{
+                 "description":"The status of the character (Alive, Dead, unknown)",
+                 "type":"string"
+              },
+              "species":{
+                 "description":"The species of the character",
+                 "type":"string"
+              },
+              "type":{
+                 "description":"The type or subspecies of the character",
+                 "type":"string"
+              },
+              "gender":{
+                 "description":"The gender of the character (Female, Male, Genderless, unknown)",
+                 "type":"string"
+              },
+              "origin":{
+                 "description":"Name of the character's origin location",
+                 "type":"string"
+              },
+              "location":{
+                 "description":"Name of the character's last known location endpoint",
+                 "type":"string"
+              },
+              "image":{
+                 "description":"Link to the character's image. All images are 300x300px and most are medium shots or portraits since they are intended to be used as avatars",
+                 "type":"string"
+              }
+           }
+        },
+        "User":{
+           "required":[
+              "name",
+              "email",
+              "password"
+           ],
+           "type":"object",
+           "properties":{
+              "name":{
+                 "description":"User name",
+                 "type":"string"
+              },
+              "email":{
+                 "description":"User email",
+                 "type":"string"
+              },
+              "password":{
+                 "description":"User password",
+                 "type":"string"
+              }
+           }
+        },
+        "Location":{
+           "required":[
+              "id"
+           ],
+           "type":"object",
+           "properties":{
+              "id":{
+                 "description":"Location Id",
+                 "type":"string"
+              },
+              "name":{
+                 "description":"Location Name",
+                 "type":"string"
+              },
+              "type":{
+                 "description":"Location Type",
+                 "type":"string"
+              },
+              "dimension":{
+                 "description":"The dimension in which the location is located",
+                 "type":"string"
+              }
+           }
+        },
+        "Episode":{
+           "required":[
+              "id",
+              "name"
+           ],
+           "type":"object",
+           "properties":{
+              "id":{
+                 "description":"The id of the episode",
+                 "type":"number"
+              },
+              "name":{
+                 "description":"The name of the episode",
+                 "type":"string"
+              },
+              "air_date":{
+                 "description":"The air date of the episode",
+                 "type":"string"
+              },
+              "episode":{
+                 "description":"The code of the episode",
+                 "type":"string"
+              }
+           }
+        },
+        "CharacterDetails":{
+           "required":[
+              "character"
+           ],
+           "type":"object",
+           "properties":{
+              "character":{
+                 "description":"Character details",
+                 "$ref":"#/components/schemas/Character"
+              },
+              "origin":{
+                 "description":"Origin location details",
+                 "$ref":"#/components/schemas/Location"
+              },
+              "location":{
+                 "description":"Last know Location details",
+                 "$ref":"#/components/schemas/Location"
+              },
+              "episode":{
+                 "description":"Episode details",
+                 "$ref":"#/components/schemas/Episode"
+              }
+           }
+        },
+        "Session":{
+           "required":[
+              "token",
+              "expiresIn",
+              "id"
+           ],
+           "type":"object",
+           "properties":{
+              "token":{
+                 "description":"Authentication token",
+                 "type":"string"
+              },
+              "expiresIn":{
+                 "description":"Token expiration time",
+                 "type":"number"
+              },
+              "id":{
+                 "description":"User id",
+                 "type":"string"
+              }
+           }
+        },
+        "CharacterResponse":{
+           "required":[
+              "pages"
+           ],
+           "type":"object",
+           "properties":{
+              "pages":{
+                 "description":"Total amount of pages",
+                 "type":"number"
+              },
+              "characters":{
+                 "description":"List of characters",
+                 "type":"array",
+                 "items":{
+                    "$ref":"#/components/schemas/Character"
+                 }
+              }
+           }
+        },
+        "Error":{
+           "required":[
+              "message"
+           ],
+           "type":"object",
+           "properties":{
+              "message":{
+                 "description":"Error message",
+                 "type":"string"
+              }
+           }
+        }
+     }
+  }
+}

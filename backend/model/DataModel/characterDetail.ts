@@ -1,5 +1,5 @@
-import Character from "../DataModel/character";
-import Episode from "./episode";
+import Character from '../DataModel/character';
+import Episode from './episode';
 import Location from './location';
 
 export default class CharacterDetails {

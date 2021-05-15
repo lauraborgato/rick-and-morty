@@ -1,18 +1,18 @@
 import express from 'express';
 import { inject } from 'inversify';
-import { interfaces, controller, request, response, httpGet, httpPut, httpDelete } from "inversify-express-utils";
+import { interfaces, controller, request, response, httpGet, httpPut, httpDelete } from 'inversify-express-utils';
 import TYPES from '../helpers/types';
 import CheckAuth from '../middlewear/checkAuth';
 import CustomRequest from '../model/ApiModels/customRequest';
 import { CharacterService } from '../service/characters';
 import CharacterResponse from '../model/ApiModels/characterResponse';
 
-@controller("/characters", CheckAuth)
+@controller('/characters', CheckAuth)
 export class CharacterController implements interfaces.Controller {
 
   constructor( @inject(TYPES.CharacterService) private characterService: CharacterService) { }
 
-  @httpGet("/")
+  @httpGet('/')
   async findAll (@request() req: CustomRequest, @response() res: express.Response) {
     return await this.characterService.findAll(req.query.page as string)
       .then((response: CharacterResponse) => {
@@ -23,7 +23,7 @@ export class CharacterController implements interfaces.Controller {
       });
   } 
 
-  @httpGet("/:id")
+  @httpGet('/:id')
   async findById (@request() req: CustomRequest, @response() res: express.Response) {
     return this.characterService.findById(parseInt(req.params.id as string))
       .then((response: any) => {
@@ -34,7 +34,7 @@ export class CharacterController implements interfaces.Controller {
       });
   } 
 
-  @httpPut("/favourite/:id")
+  @httpPut('/favourite/:id')
   async addToFavourite (@request() req: CustomRequest, @response() res: express.Response) {
     return this.characterService.addToFavourite(req.userData.id, parseInt(req.params.id))
       .then((response: any) => {
@@ -45,7 +45,7 @@ export class CharacterController implements interfaces.Controller {
       });
   } 
 
-  @httpDelete("/favourite/:id")
+  @httpDelete('/favourite/:id')
   async removeFromFvoutires (@request() req: CustomRequest, @response() res: express.Response) {
     return this.characterService.removeFavouritesFromUser(req.userData.id, parseInt(req.params.id))
       .then((response: any) => {

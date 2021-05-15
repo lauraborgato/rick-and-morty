@@ -1,8 +1,11 @@
 import 'reflect-metadata';
 import express from 'express';
 import container from './helpers/utils/inversify.config';
-import { InversifyExpressServer, interfaces, TYPE } from 'inversify-express-utils';
+import { InversifyExpressServer } from 'inversify-express-utils';
 import ConnectDatabase from './helpers/connectDB';
+import * as swaggerDocument from './swagger/swagger_doc.json';
+
+const swaggerUi = require('swagger-ui-express');
 
 import './controller/auth';
 import addCors from './helpers/addCors';
@@ -17,6 +20,8 @@ server.setConfig((app) => {
     extended: true
   }));
   app.use(express.json());
+
+  app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 });
 
 

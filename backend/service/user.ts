@@ -1,9 +1,9 @@
-import { injectable } from "inversify";
-import { User, UserModel } from "../model/DataModel/user";
+import { injectable } from 'inversify';
+import { User, UserModel } from '../model/DataModel/user';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import Session from "../model/ApiModels/session";
-import { secretString } from "../helpers/utils/config";
+import Session from '../model/ApiModels/session';
+import { secretString } from '../helpers/utils/config';
 
 @injectable()
 export class UserService {
@@ -21,7 +21,7 @@ export class UserService {
         if (!result) {
           throw new Error('User name or password are incorrect');
         }
-        const token = jwt.sign({ email: fetchuser.email, userId: fetchuser._id }, secretString, { expiresIn: "1h" });
+        const token = jwt.sign({ email: fetchuser.email, userId: fetchuser._id }, secretString, { expiresIn: '1h' });
         return new Session(token, 3600, fetchuser._id);
       })
       .catch((err: Error) => {
@@ -39,7 +39,7 @@ export class UserService {
         .then((hash: string) => {
           return UserModel.create({ name: user.name, email: user.email, password: hash })
             .then(result => {
-              const token = jwt.sign({ email: user.email, userId: result._id }, secretString, { expiresIn: "1h" });
+              const token = jwt.sign({ email: user.email, userId: result._id }, secretString, { expiresIn: '1h' });
               return new Session(token, 360, result._id);
             })
             .catch(err => {
@@ -49,30 +49,33 @@ export class UserService {
       });
   }
 
-  addFavouriteToUser = async (userId: number, characterId: number): Promise<User> => {
-    console.log(userId);
+  addFavouriteToUser = async (userId: number, characterId: number): Promise<number> => {
     return UserModel.findById(userId)
       .then((user: User | null) => {
-        console.log(user);
         if(user){
-          user.favouriteCharacters.push(characterId);
-          user.save();
-          return user; 
+          if(!user.favouriteCharacters.includes(characterId)) {
+            user.favouriteCharacters.push(characterId);
+            user.save();
+            return characterId;
+          }
+          throw new Error('Character already added');
         }
-        throw new Error('invalid user');
+        throw new Error('Invalid user');
     }).catch((err: Error) => { throw err });
   }
 
-  removeFavouriteFromUser = async (userId: number, characterId: number): Promise<User> => {
+  removeFavouriteFromUser = async (userId: number, characterId: number): Promise<number> => {
     return UserModel.findById(userId)
       .then((user: User | null) => {
         if(user){
-          console.log(user.favouriteCharacters)
-          user.favouriteCharacters = user.favouriteCharacters.filter((currentCharacterId: number) => currentCharacterId !== characterId);
-          user.save();
-          return user;
+          if(user.favouriteCharacters.includes(characterId)){
+            user.favouriteCharacters = user.favouriteCharacters.filter((currentCharacterId: number) => currentCharacterId !== characterId);
+            user.save();
+            return characterId;
+          }
+          throw new Error('Character is not in favourites');
         }
-        throw new Error('invalid user');
+        throw new Error('Invalid user');
     }).catch((err: Error) => { throw err });
   }
 }

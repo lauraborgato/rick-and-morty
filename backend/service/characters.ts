@@ -1,14 +1,13 @@
-import axios from "axios";
-import { inject, injectable } from "inversify";
-import TYPES from "../helpers/types";
-import { charactersUrl, episodeUrl, locationsUrl } from "../helpers/utils/config";
-import CharacterResponse from "../model/ApiModels/characterResponse";
-import Character from "../model/DataModel/character";
-import CharacterDetails from "../model/DataModel/characterDetail";
-import Episode from "../model/DataModel/episode";
+import axios from 'axios';
+import { inject, injectable } from 'inversify';
+import TYPES from '../helpers/types';
+import { charactersUrl, episodeUrl, locationsUrl } from '../helpers/utils/config';
+import CharacterResponse from '../model/ApiModels/characterResponse';
+import Character from '../model/DataModel/character';
+import CharacterDetails from '../model/DataModel/characterDetail';
+import Episode from '../model/DataModel/episode';
 import Location from '../model/DataModel/location';
-import { User } from "../model/DataModel/user";
-import { UserService } from "./user";
+import { UserService } from './user';
 
 @injectable()
 export class CharacterService {
@@ -89,16 +88,15 @@ export class CharacterService {
         return characterDetail;
       })
       .catch((err: Error) => {
-        console.log(err)
         throw err; 
       });
   }
 
-  addToFavourite = async (userId: number, characterId: number): Promise<User> => {
+  addToFavourite = async (userId: number, characterId: number): Promise<number> => {
     return this.userService.addFavouriteToUser(userId, characterId);
   }
 
-  removeFavouritesFromUser = async (userId: number, characterId: number): Promise<User> => {
+  removeFavouritesFromUser = async (userId: number, characterId: number): Promise<number> => {
     return this.userService.removeFavouriteFromUser(userId, characterId);
   }
 }

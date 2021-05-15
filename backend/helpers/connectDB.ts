@@ -1,6 +1,8 @@
+import { dataBaseUrl } from './utils/config';
+
 export default function ConnectDatabase() {
   const mongoose = require('mongoose');
-  const url = 'mongodb://127.0.0.1:27017/rick-and-morty';
+  const url = dataBaseUrl;
   mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
   const db = mongoose.connection
