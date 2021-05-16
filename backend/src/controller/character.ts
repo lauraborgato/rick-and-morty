@@ -14,7 +14,7 @@ export class CharacterController implements interfaces.Controller {
 
   @httpGet('/')
   async findAll (@request() req: CustomRequest, @response() res: express.Response) {
-    return await this.characterService.findAll(req.query.page as string)
+    return await this.characterService.findAll(req.userData.id, parseInt(req.query.page as string))
       .then((response: CharacterResponse) => {
         return res.status(200).json(response);
       })
@@ -25,7 +25,7 @@ export class CharacterController implements interfaces.Controller {
 
   @httpGet('/:id')
   async findById (@request() req: CustomRequest, @response() res: express.Response) {
-    return this.characterService.findById(parseInt(req.params.id as string))
+    return this.characterService.findById(req.userData.id, parseInt(req.params.id as string))
       .then((response: any) => {
         return res.status(200).json(response);
       })

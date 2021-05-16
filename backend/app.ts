@@ -9,9 +9,11 @@ const swaggerUi = require('swagger-ui-express');
 
 import './src/controller/auth';
 import addCors from './src/helpers/addCors';
+const cors = require('cors');
+import { dataBaseUrl, dataBaseUrltTest } from './src/helpers/utils/config';
 
 const app = express();
-app.use(addCors())
+app.use(cors())
 
 let server =  new InversifyExpressServer(container, null, { rootPath: '/api' }, app);
 
@@ -28,4 +30,6 @@ server.setConfig((app) => {
 let appConfigured = server.build();
 let serve: any = appConfigured.listen(process.env.PORT || 8080, () => `App running on ${serve.address().port}`);
 
-ConnectDatabase();
+ConnectDatabase(process.env.NODE_ENV === 'test' ? dataBaseUrltTest : dataBaseUrl);
+
+module.exports = app;

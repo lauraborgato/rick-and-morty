@@ -1,11 +1,10 @@
-import { dataBaseUrl } from './utils/config';
-
-export default function ConnectDatabase() {
+let db: any;
+export default function ConnectDatabase(dataBaseUrl: string) {
   const mongoose = require('mongoose');
   const url = dataBaseUrl;
   mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
-  const db = mongoose.connection
+  db = mongoose.connection
   db.once('open', () => {
     console.log('Database connected:', url)
   });

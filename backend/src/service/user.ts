@@ -49,7 +49,7 @@ export class UserService {
       });
   }
 
-  addFavouriteToUser = async (userId: number, characterId: number): Promise<number> => {
+  addFavouriteToUser = async (userId: string, characterId: number): Promise<number> => {
     return UserModel.findById(userId)
       .then((user: User | null) => {
         if(user){
@@ -64,7 +64,7 @@ export class UserService {
     }).catch((err: Error) => { throw err });
   }
 
-  removeFavouriteFromUser = async (userId: number, characterId: number): Promise<number> => {
+  removeFavouriteFromUser = async (userId: string, characterId: number): Promise<number> => {
     return UserModel.findById(userId)
       .then((user: User | null) => {
         if(user){
@@ -77,5 +77,9 @@ export class UserService {
         }
         throw new Error('Invalid user');
     }).catch((err: Error) => { throw err });
+  }
+
+  getById = async (id: string) => {
+    return UserModel.findById(id);
   }
 }

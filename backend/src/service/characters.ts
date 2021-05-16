@@ -7,6 +7,7 @@ import Character from '../model/DataModel/character';
 import CharacterDetails from '../model/DataModel/characterDetail';
 import Episode from '../model/DataModel/episode';
 import Location from '../model/DataModel/location';
+import { User, UserModel } from '../model/DataModel/user';
 import { UserService } from './user';
 
 @injectable()
@@ -33,41 +34,55 @@ export class CharacterService {
     return new Location();
   }
 
-  private getCharacter = (character: any): Character => {
-    return new Character(
-      character.id, 
-      character.name, 
-      character.status, 
-      character.species, 
-      character.type, 
-      character.gender, 
-      character.origin.name, 
-      character.location?.name, 
-      character.image
-    )
+  private getCharacters = (characters: Array<any>, user: User ): Character[] => {
+    return characters.map((character) => {
+      return new Character(
+        character.id, 
+        character.name, 
+        character.status, 
+        character.species, 
+        character.type, 
+        character.gender, 
+        character.origin.name, 
+        character.location?.name, 
+        character.image, 
+        user.favouriteCharacters.includes(character.id)
+      )
+    })
+   
   }
 
-  findAll = async (page?: string): Promise<CharacterResponse> => {
+  findAll = async (userId: string, page?: number): Promise<CharacterResponse> => {
     return axios.get(charactersUrl.concat((page ? `?page=${page}`: '')))
-    .then((response) => {
-        const characters: Character[] = response.data.results.map((character: any) => this.getCharacter(character));
-
-        return new CharacterResponse(
-          response.data.info.pages,
-          characters
-        );
+    .then(async (response) => {
+        const responseCharacters = response.data.results;
+        const user = await this.userService.getById(userId);
+          
+        if(user) {
+          return new CharacterResponse(
+            response.data.info.pages,
+            page || 1,
+            this.getCharacters(responseCharacters, user)
+          );
+        }
+       throw new Error('Invalid user');
     })
     .catch((err: Error) => {
       throw err;
     })
   }
 
-  findById = async (id: number): Promise<CharacterDetails> => {
+  findById = async (userId: string, id: number): Promise<CharacterDetails> => {
     let characterDetail = new CharacterDetails();
     return axios.get(`${charactersUrl}/${id}`)
-      .then((response: any) => {
-        characterDetail.character = this.getCharacter(response.data);
-
+      .then(async (response: any) => {
+        const user = await this.userService.getById(userId);
+        if(user) {
+          characterDetail.character = this.getCharacters([response.data], user)[0];
+        } else {
+          throw new Error('Invalid user');
+        }
+          
         return Promise.all([
           axios.get(`${locationsUrl}/${this.getIdsFromUrls([response.data.origin.url, response.data.location.url])}`),
           axios.get(`${episodeUrl}/${this.getIdsFromUrls( response.data.episode)}`)
@@ -92,11 +107,11 @@ export class CharacterService {
       });
   }
 
-  addToFavourite = async (userId: number, characterId: number): Promise<number> => {
+  addToFavourite = async (userId: string, characterId: number): Promise<number> => {
     return this.userService.addFavouriteToUser(userId, characterId);
   }
 
-  removeFavouritesFromUser = async (userId: number, characterId: number): Promise<number> => {
+  removeFavouritesFromUser = async (userId: string, characterId: number): Promise<number> => {
     return this.userService.removeFavouriteFromUser(userId, characterId);
   }
 }

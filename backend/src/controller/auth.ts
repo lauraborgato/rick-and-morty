@@ -13,7 +13,8 @@ export class AuthController implements interfaces.Controller {
 
   @httpPost('/login')
   async login (@request() req: express.Request, @response() res: express.Response) {
-    return this.userService.validateUser({name: req.body.name, email: req.body.email, password: req.body.password } as User)
+    const user = {name: req.body.name, email: req.body.email, password: req.body.password };
+    return this.userService.validateUser(user as User)
       .then((response: Session) => {
         return res.status(200).json(response);
       })
