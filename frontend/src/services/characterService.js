@@ -2,7 +2,8 @@ import axios from 'axios';
 
 export const characterService = {
   getAll,
-  addToFavourites
+  addToFavourites,
+  getById
 }
 
 function getAll(page) {
@@ -20,7 +21,7 @@ function getAll(page) {
 
 }
 
-function addToFavourites(charcaterId, isFav) {
+function addToFavourites(characterId, isFav) {
   var config = {
     headers: { 
       'Content-Type': 'application/json', 
@@ -28,15 +29,28 @@ function addToFavourites(charcaterId, isFav) {
     },
   };
   if(isFav){
-    return axios.delete( `http://localhost:8080/api/characters/favourite/${charcaterId}`, config)
+    return axios.delete( `http://localhost:8080/api/characters/favourite/${characterId}`, config)
     .then( characterResponse => {
         return characterResponse.data;
     })
   } else {
-    return axios.put( `http://localhost:8080/api/characters/favourite/${charcaterId}`, {}, config)
+    return axios.put( `http://localhost:8080/api/characters/favourite/${characterId}`, {}, config)
     .then( characterResponse => {
         return characterResponse.data;
     })
   }
  
+}
+
+function getById(characterId){
+  var config = {
+    headers: { 
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')).token}`
+    },
+  };
+  return axios.get( `http://localhost:8080/api/characters/${characterId}`, config)
+  .then( characterResponse => {
+      return characterResponse.data;
+  })
 }

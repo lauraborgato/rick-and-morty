@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useLocation, useHistory } from 'react-router-dom';
-import { login } from '../store/actions/user';
-import './login.scss';
+import { useLocation } from 'react-router-dom';
+import { signup } from '../store/actions/user';
+import './signup.scss';
 
 
 
-function Login() {
+function Signup() {
     const [inputs, setInputs] = useState({
         username: '',
         password: ''
     });
 
     const [submitted, setSubmitted] = useState(false);
-    const { username, password } = inputs;
+    const { username, email, password } = inputs;
 
     const location = useLocation();
     
     const dispatch = useDispatch();
 
-    const history = useHistory();
 
     function handleChange(e) {
         const { id, value } = e.target;
@@ -34,39 +33,38 @@ function Login() {
             // get return url from location state or default to home page
                    // get return url from location state or default to home page
             const { from } = location.state || { from: { pathname: "/" } };
-            dispatch(login(username, password, from));
+            dispatch(signup(username, email,  password, from));
         }
     }
 
-    function handleClick() {
-        history.push("/signup");
-    }
-
     return (
-        <div className="login-container">
-            <div className="login-container__title">
-                <h2>Login</h2>
+        <div className="signup-container">
+            <div className="signup-container__title">
+                <h2>signup</h2>
             </div>
 
-            <form className="login-container__form" onSubmit={handleSubmit}>
+            <form className="signup-container__form" onSubmit={handleSubmit}>
                 <div className="form-input">
                     <label htmlFor="username" >Username</label>
                     <input id="username" type="text" onChange={handleChange} />
                 </div>
+
+                <div className="form-input">
+                    <label htmlFor="email" >Email</label>
+                    <input id="email" type="email" onChange={handleChange} />
+                </div>
                 
                 <div className="form-input">
                     <label htmlFor="password">Password</label>
-                    <input id="password" type="text" onChange={handleChange} />
+                    <input id="password" type="password" onChange={handleChange} />
                 </div>
 
                 <div className="form-submit">
-                    <button type="submit" className="form-submit__btn">Login</button>
-                    <button type="button" className="form-submit__btn" onClick={handleClick} type="button">Sign Up</button>
+                    <button type="submit" className="form-submit__btn">signup</button>
                 </div>
             </form>
-
         </div>
     )
 }
 
-export default Login;
+export default Signup;

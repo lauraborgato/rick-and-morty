@@ -3,18 +3,18 @@ import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import Home from '../home/home';
 import Login from '../login/login';
 import Signup from '../signup/signup';
+import Detail from '../detail/detail';
 import PrivateRoute from '../auth/privateRoute';
 
 function App() {
     
     let location = useLocation();
-    console.log('Location ', location);
-
     const routes = (
         <Switch >
             <PrivateRoute exact path="/" component={Home} />
-            <Route path="/login" component={Login} />
+            <PrivateRoute path="/detail/:id" component={Detail}  />
             <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} />
             <Redirect from={location.pathname} to="/" />
         </Switch>
     )

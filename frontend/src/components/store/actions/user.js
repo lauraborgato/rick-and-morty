@@ -16,7 +16,6 @@ export const userActions = {
 };
 
 export function login(username, password, from) {
-    console.log('From in login ', from);
     return dispatch => {
         dispatch(request({ username }));
 
@@ -40,7 +39,6 @@ export function login(username, password, from) {
 }
 
 export function signup(username, email, password, from) {
-    console.log('From in signup ', from);
     return dispatch => {
         dispatch(request({ username }));
 

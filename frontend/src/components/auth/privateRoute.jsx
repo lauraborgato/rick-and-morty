@@ -7,14 +7,13 @@ function PrivateRoute({ component: Component, ...rest }) {
 
     function checkLogin() {
         if(userLS){
-            return Date.now() >= userLS.expiresIn * 1000 ? true: false;
+            return Date.now() <= new Date(JSON.parse(userLS).tokenExpires) ? true: false;
         }
         return false;
     }
 
     return (
         <Route {...rest} render={props => {
-            console.log('Location in private route ', props)
             if (!checkLogin()) {
                 // not logged in so redirect to login page with the return url
                 return <Redirect to={{ pathname: '/login', state: { from: props.location.pathname } }} />

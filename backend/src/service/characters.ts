@@ -82,9 +82,16 @@ export class CharacterService {
         } else {
           throw new Error('Invalid user');
         }
-          
+        
+        let promiseGetLocation;
+        if (response.data.origin.url || response.data.location.url) {
+          promiseGetLocation = axios.get(`${locationsUrl}/${this.getIdsFromUrls([response.data.origin.url, response.data.location.url])}`);
+        } else {
+          promiseGetLocation = new Promise((resolve, reject) => resolve({data:[]}))
+        }
+
         return Promise.all([
-          axios.get(`${locationsUrl}/${this.getIdsFromUrls([response.data.origin.url, response.data.location.url])}`),
+          promiseGetLocation,
           axios.get(`${episodeUrl}/${this.getIdsFromUrls( response.data.episode)}`)
         ]);
       })
