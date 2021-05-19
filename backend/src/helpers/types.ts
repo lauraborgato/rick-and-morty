@@ -3,6 +3,7 @@ const TYPES = {
   CharacterService: Symbol('CharacterService'),
   AuthController: Symbol('AuthController'),
   CharacterController: Symbol('CharacterController'),
+  DataBaseURl: Symbol('DataBaseURl'),
 };
 
 export default TYPES;

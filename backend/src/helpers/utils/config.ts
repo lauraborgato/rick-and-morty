@@ -3,3 +3,4 @@ export const charactersUrl = 'https://rickandmortyapi.com/api/character';
 export const locationsUrl = 'https://rickandmortyapi.com/api/location';
 export const episodeUrl = 'https://rickandmortyapi.com/api/episode';
 export const dataBaseUrl = 'mongodb://127.0.0.1:27017/rick-and-morty';
+export const dataBaseUrltTest = 'mongodb://127.0.0.1:27017/test-rick-and-morty';

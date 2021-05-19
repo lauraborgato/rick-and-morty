@@ -4,10 +4,10 @@
   "description": "A web app with react and Nodejs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "client": "cd ./frontend && yarn start",
     "server": "cd ./backend && yarn start",
     "start": "concurrently \"yarn server\" \"yarn client\"",
+    "test": "cd ./backend && yarn test",
     "install:client": "cd ./frontend && yarn",
     "install:server": "cd ./backend && yarn",
     "install:dep": "concurrently \"yarn install:client\" \"yarn install:server\""
