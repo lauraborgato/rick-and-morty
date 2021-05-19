@@ -50,3 +50,9 @@ Execute the following command in both projects. Also, you need to have mongo db 
 - You should login or sign up before seeing the list of characters. 
 - There is a check on private routes to validate if the token is still valid and if the user have a session.
 - The user login is stored on the local storage to ensure that if the user reload the page the session is still valid. 
+
+
+## Test
+I did't have the chance to finish the tests but i have made some for the api. 
+- For testing i use mocha and chai in convination with hai-http
+- For running the test (only backend) execute `yarn test` 
